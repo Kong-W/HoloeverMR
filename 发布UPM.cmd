@@ -1,7 +1,7 @@
 ::设置模块名字,发布的时候 改路径，名字 版本
-SET ToolName=UPM-HoloeverXR-1_0_1
+SET ToolName=UPM-HoloeverXR-1_0_2
 ::设置模块版本
-SET ToolVersion=HoloeverXR-1.0.1
+SET ToolVersion=1.0.2
 ::设置模块源路径
 SET ToolAssetPath=Assets/
 

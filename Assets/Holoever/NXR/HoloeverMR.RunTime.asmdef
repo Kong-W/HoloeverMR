@@ -3,8 +3,7 @@
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [
-        "Android",
-        "Editor"
+        "Android"
     ],
     "allowUnsafeCode": false,
     "overrideReferences": false,
