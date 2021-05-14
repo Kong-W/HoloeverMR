@@ -1,0 +1,5 @@
+发布APK,需要验证激活才能正常使用HoloeverSDK 的所有功能
+
+步骤1: 将要申请使用的包名提交中科永光科技有限公司.
+步骤2: 将获取后的 NibiruSDKKey.bin 复制覆盖在此路径下 Assets\\Plugins\\Android\\assets.\n"
+步骤3: 将获取到的KEY的值,输入并提交.
