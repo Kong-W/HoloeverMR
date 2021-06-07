@@ -12,7 +12,7 @@ HoloeverMR For Unity
 
 ### 填入地址
 
-###     https://github.com/Kong-W/HoloeverMR.git#1.0.7 
+###     https://github.com/Kong-W/HoloeverMR.git#1.1.0 
 
 ### 点击[add]
 
