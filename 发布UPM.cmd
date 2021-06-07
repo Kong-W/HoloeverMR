@@ -1,9 +1,9 @@
 ::设置模块名字,发布的时候 改路径，名字 版本
-SET ToolName=UPM-HoloeverXR-1_1_0
+SET ToolName=UPM-HoloeverXR-1_1_1
 ::设置模块版本
-SET ToolVersion=1.1.0
+SET ToolVersion=1.1.1
 ::设置模块源路径
-SET ToolAssetPath=Assets/
+SET ToolAssetPath=/
 
 ::此命令会创建一个ToolName的分支，并同步ToolAssetPath下的内容
 git subtree split -P %ToolAssetPath% --branch %ToolName%
