@@ -1,11 +1,10 @@
 # HoloeverMR
-# __________________________________________________________________
+
 HoloeverMR For Unity
 
 
-## HoloeverMR SDK 导入说明
 # __________________________________________________________________
-
+## HoloeverMR SDK 导入说明
 ### 1、新建工程
 ### 2、点击 Windows/PackageManager,打开
 ### 3、点击左上角+ 选择 [add package from git URL]
@@ -17,7 +16,6 @@ HoloeverMR For Unity
 ### SDK导入完成
 
 
-
-## 文档地址 
 # __________________________________________________________________
+## 文档地址 
 ###   https://github.com/Kong-W/HoloeverMR_Document.git
