@@ -12,7 +12,7 @@ HoloeverMR For Unity
 
 ### 填入地址
 
-###     https://github.com/Kong-W/HoloeverMR.git#1.1.0 
+###     https://github.com/Kong-W/HoloeverMR.git 
 
 ### 点击[add]
 
@@ -20,7 +20,7 @@ HoloeverMR For Unity
 
 ### 等待加载完成
 
-### 找到 [Package/HoloeverXR For Unity/Holoever/UnityPackage/HoloeverXR Package] 双击导入示例
+### 找到 [Package/HoloeverXR For Unity/Holoever/UnityPackage/HoloeverMR Assets] 双击导入资源
 
 ### SDK导入完成
 
