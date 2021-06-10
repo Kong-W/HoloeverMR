@@ -2,7 +2,7 @@
 	"name": "com.holoever.xr.sdk.package",
 	"displayName": "HoloeverXR For Unity",
 	"description": "HoloeverXR Unity SDK",
-	"version": "1.2.0",
+	"version": "1.2.2",
 	"unity": "2019.4",
 	"license": "MIT",
 	"dependencies": {
