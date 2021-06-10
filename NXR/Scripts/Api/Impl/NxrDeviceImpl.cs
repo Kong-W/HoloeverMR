@@ -37,7 +37,7 @@ namespace Nxr.Internal
 
         int GetVolume()
         {
-            return NxrViewer.Instance.GetNibiruService().GetVolumeValue();
+            return NxrViewer.Instance.GetHoloeverService().GetVolumeValue();
         }
 
         bool SetVolumeNum(int volume)

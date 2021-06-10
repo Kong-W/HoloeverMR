@@ -1,4 +1,3 @@
-// Copyright 2016 Nibiru. All rights reserved.
 using UnityEngine;
 
 namespace Nxr.Internal

@@ -1,10 +1,9 @@
-﻿using System.Runtime.InteropServices;
-using UnityEngine;
+﻿using UnityEngine;
 namespace Nxr.Internal
 {
     public class FpsStatistics : MonoBehaviour
     {
-        NibiruService mNibiruService;
+        HoloeverService mHoloeverService;
         TextMesh textMesh;
         // Use this for initialization
         void Start()
@@ -12,10 +11,10 @@ namespace Nxr.Internal
             textMesh = GetComponent<TextMesh>();
             if (NxrViewer.Instance.ShowFPS)
             {
-                mNibiruService = NxrViewer.Instance.GetNibiruService();
-                if(mNibiruService != null)
+                mHoloeverService = NxrViewer.Instance.GetHoloeverService();
+                if(mHoloeverService != null)
                 {
-                    mNibiruService.SetEnableFPS(true);
+                    mHoloeverService.SetEnableFPS(true);
                 }
             } else
             {
@@ -28,9 +27,9 @@ namespace Nxr.Internal
         // Update is called once per frame
         void Update()
         {
-            if(mNibiruService != null)
+            if(mHoloeverService != null)
             {
-                float[] fps = mNibiruService.GetFPS();
+                float[] fps = mHoloeverService.GetFPS();
                 textMesh.text = "FBO " + fps[0] + ", DTR " + fps[1];
             }
         }

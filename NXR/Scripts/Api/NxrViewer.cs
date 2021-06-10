@@ -2,8 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
-using NibiruTask;
-using NibiruAxis;
+using HoloeverTask;
+using HoloeverAxis;
 using UnityEngine.SceneManagement;
 
 namespace Nxr.Internal
@@ -764,11 +764,6 @@ namespace Nxr.Internal
 
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
-#if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-            // 编辑器PASS
-            nxr.NibiruXR.instance.Init(gameObject);
-#endif
-
             InitDevice();
             if (!IsWinPlatform && !NxrGlobal.supportDtr && !NxrGlobal.isVR9Platform)
             {
@@ -844,7 +839,7 @@ namespace Nxr.Internal
             if (defineSymbols == null || !defineSymbols.Contains("NIBIRU_"))
             {
                 string title = "Hmd Type Not Configed!";
-                string message = "Please Choose Hmd Type in Menu \nNibiruXR->XR Settings .";
+                string message = "Please Choose Hmd Type in Menu \nHoloeverXR->XR Settings .";
                 UnityEditor.EditorUtility.DisplayDialog(title, message, "OK");
                 Debug.LogError(title + " " + message);
             }
@@ -861,9 +856,9 @@ namespace Nxr.Internal
             AddStereoControllerToCameras();
         }
 
-        public delegate void NibiruConfigCallback(NxrInstantNativeApi.Nibiru_Config cfg);
+        public delegate void HoloeverConfigCallback(NxrInstantNativeApi.Holoever_Config cfg);
 
-        NibiruConfigCallback _nvrConfigCallback;
+        HoloeverConfigCallback _nvrConfigCallback;
 
         void Start()
         {
@@ -873,8 +868,8 @@ namespace Nxr.Internal
             if (IsWinPlatform)
             {
                 // 初始化光学参数
-                _nvrConfigCallback += OnNibiruConfigCallback;
-                NxrInstantNativeApi.SetNibiruConfigCallback(_nvrConfigCallback);
+                _nvrConfigCallback += OnHoloeverConfigCallback;
+                NxrInstantNativeApi.SetHoloeverConfigCallback(_nvrConfigCallback);
 
 
 #if NIBIRU_DEBUG
@@ -1033,7 +1028,7 @@ namespace Nxr.Internal
             }
         }
 
-        private void OnNibiruConfigCallback(NxrInstantNativeApi.Nibiru_Config cfg)
+        private void OnHoloeverConfigCallback(NxrInstantNativeApi.Holoever_Config cfg)
         {
             Loom.QueueOnMainThread((param) =>
             {
@@ -1049,7 +1044,7 @@ namespace Nxr.Internal
                 // 手柄类型
                 NxrControllerHelper.InitController((int) cfg.controllerType);
                 device.profileChanged = true;
-                Debug.Log("OnNibiruConfigCallback Config : Ipd " + cfg.ipd + ", Near " + cfg.near +
+                Debug.Log("OnHoloeverConfigCallback Config : Ipd " + cfg.ipd + ", Near " + cfg.near +
                           ", FrustumLeft(LRBT) " + cfg.eyeFrustumParams[0] + ", " + cfg.eyeFrustumParams[1] + ","
                           + cfg.eyeFrustumParams[2] + ", " + cfg.eyeFrustumParams[3] + ", ControllerType " +
                           cfg.controllerType);
@@ -1090,14 +1085,6 @@ namespace Nxr.Internal
                 GazeInputModule.gazePointer.UpdateStatus();
             }
 
-#if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-            if (baseTryTimes < 5 && gameObject.GetComponent(System.Text.Encoding.Default.GetString(winTypeName)) == null)
-            {
-                baseTryTimes++;
-                nxr.NibiruXR.instance.Init(gameObject);
-                Debug.Log("Run NibiruXR Init in Update(), " + baseTryTimes);
-            }
-#endif
             if (nxrInput != null)
             {
                 nxrInput.Process();
@@ -1193,7 +1180,7 @@ namespace Nxr.Internal
             {
                 updatedToFrame = Time.frameCount;
                 DispatchEvents();
-                if (NeedUpdateNearFar && device != null && device.nibiruVRServiceId != 0)
+                if (NeedUpdateNearFar && device != null && device.holoeverVRServiceId != 0)
                 {
                     float far = GetCameraFar();
                     float mNear = 0.0305f;
@@ -1326,7 +1313,7 @@ namespace Nxr.Internal
                 }
                 else
                 {
-                    KeyAction = NibiruTaskApi.GetKeyAction();
+                    KeyAction = HoloeverTaskApi.GetKeyAction();
                 }
 
                 // if (KeyAction[CKeyEvent.KEYCODE_DPAD_CENTER] == 0)
@@ -1504,14 +1491,14 @@ namespace Nxr.Internal
                                                    || Input.GetKeyUp(KeyCode.Escape)))
             {
                 Debug.Log("KeyUp===>" + Event.current.keyCode.ToString());
-                if (NibiruRemindBox.Instance.Showing())
+                if (HoloeverRemindBox.Instance.Showing())
                 {
-                    NibiruRemindBox.Instance.ReleaseDestory();
+                    HoloeverRemindBox.Instance.ReleaseDestory();
                 }
 
-                if (NibiruShutDownBox.Instance.Showing())
+                if (HoloeverShutDownBox.Instance.Showing())
                 {
-                    NibiruShutDownBox.Instance.ReleaseDestory();
+                    HoloeverShutDownBox.Instance.ReleaseDestory();
                 }
 
                 // else
@@ -1629,9 +1616,9 @@ namespace Nxr.Internal
 
         // private void TriggerKeyEventForController(int keycode, bool isKeyUp)
         // {
-        //     if(NibiruRemindBox.Instance.Showing() && keycode == CKeyEvent.KEYCODE_BUTTON_APP && isKeyUp)
+        //     if(HoloeverRemindBox.Instance.Showing() && keycode == CKeyEvent.KEYCODE_BUTTON_APP && isKeyUp)
         //     {
-        //         NibiruRemindBox.Instance.ReleaseDestory();
+        //         HoloeverRemindBox.Instance.ReleaseDestory();
         //         return;
         //     }
         //     
@@ -1788,7 +1775,7 @@ namespace Nxr.Internal
                 Camera camera = Camera.allCameras[i];
                 Debug.Log("Check Camera : " + camera.name);
                 if (
-                    (camera.tag == "MainCamera" || camera.tag == "NibiruCamera")
+                    (camera.tag == "MainCamera" || camera.tag == "HoloeverCamera")
                     && camera.targetTexture == null &&
                     camera.GetComponent<NxrStereoController>() == null &&
                     camera.GetComponent<NxrEye>() == null &&
@@ -1870,9 +1857,9 @@ namespace Nxr.Internal
 
         void OnApplicationQuit()
         {
-            if (GetNibiruService() != null && GetNibiruService().IsMarkerRecognizeRunning)
+            if (GetHoloeverService() != null && GetHoloeverService().IsMarkerRecognizeRunning)
             {
-                GetNibiruService().StopMarkerRecognize();
+                GetHoloeverService().StopMarkerRecognize();
             }
 
             StopAllCoroutines();
@@ -1909,7 +1896,7 @@ namespace Nxr.Internal
             {
                 if (NxrInstantNativeApi.Inited)
                 {
-                    _nvrConfigCallback -= OnNibiruConfigCallback;
+                    _nvrConfigCallback -= OnHoloeverConfigCallback;
                     NxrInstantNativeApi.Inited = false;
                     NxrInstantNativeApi.Cleanup();
                     NxrControllerHelper.Reset();
@@ -1945,8 +1932,8 @@ namespace Nxr.Internal
                 Recenter();
             }
 
-            NibiruRemindBox.Instance.ReleaseDestory();
-            NibiruShutDownBox.Instance.ReleaseDestory();
+            HoloeverRemindBox.Instance.ReleaseDestory();
+            HoloeverShutDownBox.Instance.ReleaseDestory();
         }
 
         void OnVolumnUp()
@@ -2125,7 +2112,7 @@ namespace Nxr.Internal
 
             bool IsHeadPoseUpdated = device.IsHeadPoseUpdated();
             if (USE_DTR && NxrGlobal.supportDtr && IsHeadPoseUpdated)
-                NxrPluginEvent.IssueWithData(NibiruRenderEventType.TimeWarp, NxrViewer.Instance.GetTimeWarpViewNum());
+                NxrPluginEvent.IssueWithData(HoloeverRenderEventType.TimeWarp, NxrViewer.Instance.GetTimeWarpViewNum());
         }
 
         IEnumerator EndOfFrame()
@@ -2162,7 +2149,6 @@ namespace Nxr.Internal
                             listeners[p] = (INxrJoystickListener) joystickcomps[p];
                         }
 
-                        // INibiruJoystickListener
                         notifyJoystickPressed(listeners, index, axisValue);
                         foreach (Component cp in joystickcomps)
                         {
@@ -2582,9 +2568,9 @@ namespace Nxr.Internal
         /// Call after script's Awake
         /// </summary>
         /// <returns></returns>
-        public NibiruService GetNibiruService()
+        public HoloeverService GetHoloeverService()
         {
-            return device.GetNibiruService();
+            return device.GetHoloeverService();
         }
 
         private GameObject eventReceiverVoice;
@@ -2689,9 +2675,9 @@ namespace Nxr.Internal
                 Loom.QueueOnMainThread((param) =>
                 {
                     bool isReady = int.Parse((string) param) == 1;
-                    if (NibiruTaskApi.serverApiReady != null)
+                    if (HoloeverTaskApi.serverApiReady != null)
                     {
-                        NibiruTaskApi.serverApiReady(isReady);
+                        HoloeverTaskApi.serverApiReady(isReady);
                     }
                 }, msgData);
             }
@@ -2700,9 +2686,9 @@ namespace Nxr.Internal
                 Loom.QueueOnMainThread((param) =>
                 {
                     bool isReady = int.Parse((string) param) == 1;
-                    if (NibiruTaskApi.sysSleepApiReady != null)
+                    if (HoloeverTaskApi.sysSleepApiReady != null)
                     {
-                        NibiruTaskApi.sysSleepApiReady(isReady);
+                        HoloeverTaskApi.sysSleepApiReady(isReady);
                     }
                 }, msgData);
             }
@@ -2738,10 +2724,10 @@ namespace Nxr.Internal
                 if (value != NxrGlobal.voiceLanguage)
                 {
                     NxrGlobal.voiceLanguage = value;
-                    NibiruService nibiruService = device.GetNibiruService();
-                    if (nibiruService != null)
+                    HoloeverService holoeverService = device.GetHoloeverService();
+                    if (holoeverService != null)
                     {
-                        nibiruService.UpdateVoiceLanguage();
+                        holoeverService.UpdateVoiceLanguage();
                     }
                 }
             }

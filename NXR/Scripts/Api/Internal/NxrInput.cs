@@ -1,4 +1,4 @@
-﻿using NibiruTask;
+﻿using HoloeverTask;
 using UnityEngine;
 using System;
 
@@ -195,7 +195,7 @@ namespace Nxr.Internal
             {
                 // 交互库Close
                 Array.Copy(KeyStateController3DOF, KeyStateController3DOF_Pre, MAX_INDEX);
-                int[] keyAction = NibiruTaskApi.GetKeyAction();
+                int[] keyAction = HoloeverTaskApi.GetKeyAction();
                 KeyStateController3DOF = keyAction;
                 // type, action, x, y
                 float[] touchInfo = ControllerAndroid.getTouch();
@@ -257,8 +257,8 @@ namespace Nxr.Internal
             if (Application.isEditor && NxrViewer.Instance.RemoteDebug && NxrViewer.Instance.RemoteController)
             {
                 Array.Copy(KeyStateController3DOF, KeyStateController3DOF_Pre, MAX_INDEX);
-                NibiruEmulatorManager nibiruEmulatorManager = NibiruEmulatorManager.Instance;
-                Array.Copy(nibiruEmulatorManager.KeyStateController3DOF, KeyStateController3DOF, MAX_INDEX);
+                HoloeverEmulatorManager holoeverEmulatorManager = HoloeverEmulatorManager.Instance;
+                Array.Copy(holoeverEmulatorManager.KeyStateController3DOF, KeyStateController3DOF, MAX_INDEX);
             }
 
             // 内部事件处理返回键逻辑
@@ -268,23 +268,23 @@ namespace Nxr.Internal
                 GetControllerKeyUp(CKeyEvent.KEYCODE_CONTROLLER_MENU, InteractionManager.NACTION_HAND_TYPE.HAND_RIGHT))
             {
                 bool EatBackKeyEvent = false;
-                if (NibiruRemindBox.Instance && NibiruRemindBox.Instance.remindbox != null)
+                if (HoloeverRemindBox.Instance && HoloeverRemindBox.Instance.remindbox != null)
                 {
-                    NibiruRemindBox.Instance.ReleaseDestory();
+                    HoloeverRemindBox.Instance.ReleaseDestory();
                     EatBackKeyEvent = true;
                 }
 
-                if (NibiruShutDownBox.Instance && NibiruShutDownBox.Instance.Showing())
+                if (HoloeverShutDownBox.Instance && HoloeverShutDownBox.Instance.Showing())
                 {
-                    NibiruShutDownBox.Instance.ReleaseDestory();
+                    HoloeverShutDownBox.Instance.ReleaseDestory();
                     EatBackKeyEvent = true;
                 }
 
-                if (NibiruKeyBoard.Instance.isShown())
+                if (HoloeverKeyBoard.Instance.isShown())
                 {
-                    NibiruKeyBoard.Instance.Dismiss();
+                    HoloeverKeyBoard.Instance.Dismiss();
                     EatBackKeyEvent = true;
-                    Debug.Log("NibiruKeyBoard->Dismiss");
+                    Debug.Log("HoloeverKeyBoard->Dismiss");
                 }
 
                 if (EatBackKeyEvent)

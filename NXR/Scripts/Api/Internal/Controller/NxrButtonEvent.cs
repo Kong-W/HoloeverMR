@@ -1,4 +1,4 @@
-﻿using NibiruTask;
+﻿using HoloeverTask;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,31 +7,31 @@ namespace Nxr.Internal
     public class NxrButtonEvent : MonoBehaviour
     {
         [System.Serializable]
-        public class NibiruControllerEvent : UnityEvent<NxrInstantNativeApi.NibiruDeviceType>
+        public class HoloeverControllerEvent : UnityEvent<NxrInstantNativeApi.HoloeverDeviceType>
         {
            
         }
 
         [System.Serializable]
-        public class NibiruControllerTouchEvent : UnityEvent<NxrInstantNativeApi.NibiruDeviceType, float, float>
+        public class HoloeverControllerTouchEvent : UnityEvent<NxrInstantNativeApi.HoloeverDeviceType, float, float>
         {
 
         }
 
-        public NibiruControllerEvent onMenuDown;
-        public NibiruControllerEvent onMenuUp;
-        public NibiruControllerEvent onSystemDown;
-        public NibiruControllerEvent onSystemUp;
-        public NibiruControllerEvent onTriggerDown;
-        public NibiruControllerEvent onTriggerUp;
-        public NibiruControllerEvent onGripDown;
-        public NibiruControllerEvent onGripUp;
-        public NibiruControllerEvent onTouchpadDown;
-        public NibiruControllerEvent onTouchpadUp;
-        public NibiruControllerEvent onTouchpadTouch;
-        public NibiruControllerEvent onTouchpadRelease;
+        public HoloeverControllerEvent onMenuDown;
+        public HoloeverControllerEvent onMenuUp;
+        public HoloeverControllerEvent onSystemDown;
+        public HoloeverControllerEvent onSystemUp;
+        public HoloeverControllerEvent onTriggerDown;
+        public HoloeverControllerEvent onTriggerUp;
+        public HoloeverControllerEvent onGripDown;
+        public HoloeverControllerEvent onGripUp;
+        public HoloeverControllerEvent onTouchpadDown;
+        public HoloeverControllerEvent onTouchpadUp;
+        public HoloeverControllerEvent onTouchpadTouch;
+        public HoloeverControllerEvent onTouchpadRelease;
 
-        public NibiruControllerTouchEvent onTouchPosition;
+        public HoloeverControllerTouchEvent onTouchPosition;
 
         public UnityEvent onDpadLeftDown;
         public UnityEvent onDpadLeftUp;
@@ -48,8 +48,8 @@ namespace Nxr.Internal
         public UnityEvent onDpadCenterDown;
         public UnityEvent onDpadCenterUp;
 
-        NxrInstantNativeApi.Nibiru_ControllerStates _prevStates_hmd;
-        NxrInstantNativeApi.Nibiru_ControllerStates _currentStates_hmd;
+        NxrInstantNativeApi.Holoever_ControllerStates _prevStates_hmd;
+        NxrInstantNativeApi.Holoever_ControllerStates _currentStates_hmd;
 
         NxrTrackedDevice[] nvrTrackedDevices;
         private void Start()
@@ -62,18 +62,18 @@ namespace Nxr.Internal
             nvrTrackedDevices = FindObjectsOfType<NxrTrackedDevice>();
         }
 
-        private int getNoloType(NxrInstantNativeApi.NibiruDeviceType deviceType)
+        private int getNoloType(NxrInstantNativeApi.HoloeverDeviceType deviceType)
         {
             int noloType = (int)CDevice.NOLO_TYPE.NONE;
-            if (deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController)
+            if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController)
             {
                 noloType = (int)CDevice.NOLO_TYPE.LEFT;
             }
-            else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+            else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
             {
                 noloType = (int)CDevice.NOLO_TYPE.RIGHT;
             }
-            else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.Hmd)
+            else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.Hmd)
             {
                 noloType = (int)CDevice.NOLO_TYPE.HEAD;
             }
@@ -85,7 +85,7 @@ namespace Nxr.Internal
         {
             _prevStates_hmd = _currentStates_hmd;
 #if UNITY_STANDALONE_WIN || ANDROID_REMOTE_NRR
-            _currentStates_hmd = NxrInstantNativeApi.GetControllerStates(NxrInstantNativeApi.NibiruDeviceType.Hmd);
+            _currentStates_hmd = NxrInstantNativeApi.GetControllerStates(NxrInstantNativeApi.HoloeverDeviceType.Hmd);
 #endif
 
             if (GetHMDButtonDown(NxrTrackedDevice.ButtonID.DPadCenter))

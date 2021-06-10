@@ -3,7 +3,7 @@ using System;
 
 namespace Nxr.Internal
 {
-    public enum NibiruRenderEventType
+    public enum HoloeverRenderEventType
     {
         // Android
         InitRenderThread = 0,
@@ -30,7 +30,7 @@ namespace Nxr.Internal
         /// <summary>
         /// Immediately issues the given event.
         /// </summary>
-        public static void Issue(NibiruRenderEventType eventType)
+        public static void Issue(HoloeverRenderEventType eventType)
         {
             GL.IssuePluginEvent(EncodeType((int)eventType));
         }
@@ -41,7 +41,7 @@ namespace Nxr.Internal
         /// Split the 32-bit integer event data into two separate "send-two-bytes"
         /// plugin events. Then issue the explicit event that makes use of the data.
         /// </summary>
-        public static void IssueWithData(NibiruRenderEventType eventType, int eventData)
+        public static void IssueWithData(HoloeverRenderEventType eventType, int eventData)
         {
             // Encode and send-two-bytes of data
             GL.IssuePluginEvent(EncodeData((int)eventType, eventData, 0));

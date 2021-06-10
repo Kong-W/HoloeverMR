@@ -39,7 +39,7 @@ namespace Nxr.Internal
             IsLeftNoloControllerConnected = false;
             IsRightNoloControllerConnected = false;
             ControllerRaycastObject = null;
-            ControllerType = (int)NxrInstantNativeApi.NibiruControllerId.NONE;
+            ControllerType = (int)NxrInstantNativeApi.HoloeverControllerId.NONE;
         }
 
         public static void InitController(int type)
@@ -47,12 +47,12 @@ namespace Nxr.Internal
             ControllerType = type;
             switch (type)
             {
-                case (int)NxrInstantNativeApi.NibiruControllerId.NOLO:
+                case (int)NxrInstantNativeApi.HoloeverControllerId.NOLO:
                     IsLeftNoloControllerConnected = true;
                     IsRightNoloControllerConnected = true;
                     CreateNoloController();
                     break;
-                case (int)NxrInstantNativeApi.NibiruControllerId.NORMAL_3DOF:
+                case (int)NxrInstantNativeApi.HoloeverControllerId.NORMAL_3DOF:
                     Is3DofControllerConnected = true;
                     HandMode3DOF = RIGHT_HAND_MODE;
                     break;

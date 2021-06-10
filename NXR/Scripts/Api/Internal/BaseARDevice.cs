@@ -1,17 +1,3 @@
-// Copyright 2016 Nibiru. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 #if !UNITY_EDITOR
 #if UNITY_ANDROID
 #define ANDROID_DEVICE
@@ -57,7 +43,7 @@ namespace Nxr.Internal
 
         public virtual void SetGpuLevel(NxrOverrideSettings.PerfLevel level) { }
 
-        public long nibiruVRServiceId;
+        public long holoeverVRServiceId;
 
         public virtual RenderTexture CreateStereoScreen(int w, int h)
         {
@@ -118,7 +104,7 @@ namespace Nxr.Internal
             return rt;
         }
 
-        public virtual long CreateNibiruVRService()
+        public virtual long CreateHoloeverVRService()
         {
             return 0;
         }
@@ -245,7 +231,7 @@ namespace Nxr.Internal
 
         public virtual void AppQuit() { }
 
-        public virtual NibiruService GetNibiruService()
+        public virtual HoloeverService GetHoloeverService()
         {
             return null;
         }
@@ -413,12 +399,12 @@ namespace Nxr.Internal
 
         }
 
-        public virtual NxrInstantNativeApi.NibiruDeviceType GetSixDofControllerPrimaryDeviceType()
+        public virtual NxrInstantNativeApi.HoloeverDeviceType GetSixDofControllerPrimaryDeviceType()
         {
-            return NxrInstantNativeApi.NibiruDeviceType.None;
+            return NxrInstantNativeApi.HoloeverDeviceType.None;
         }
 
-        public virtual void SetSixDofControllerPrimaryDeviceType(NxrInstantNativeApi.NibiruDeviceType deviceType)
+        public virtual void SetSixDofControllerPrimaryDeviceType(NxrInstantNativeApi.HoloeverDeviceType deviceType)
         {
             
         }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.IO;
 using System.Threading;
-using NibiruTask;
+using HoloeverTask;
 using Nxr.Internal;
 
 public class SpriteLoader : MonoBehaviour

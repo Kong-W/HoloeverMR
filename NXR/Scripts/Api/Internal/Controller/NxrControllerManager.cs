@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using NibiruTask;
+using HoloeverTask;
 using System.Collections.Generic;
-using NibiruAxis;
+using HoloeverAxis;
 using UnityEngine.UI;
 
 namespace Nxr.Internal
@@ -9,6 +9,12 @@ namespace Nxr.Internal
     public class NxrControllerManager : MonoBehaviour
     {
         public bool IsDebugInEditor;
+        public static NxrControllerManager instance = null;
+        public static NxrControllerManager Instance {
+            get {
+                return instance;
+            }
+        }
 
         Dictionary<InteractionManager.NACTION_HAND_TYPE, NxrTrackedDevice> DualCtrlDeviceDict =
             new Dictionary<InteractionManager.NACTION_HAND_TYPE, NxrTrackedDevice>();
@@ -20,6 +26,7 @@ namespace Nxr.Internal
         // Use this for initialization
         void Start()
         {
+            instance = this;
             transformCache = transform;
             DualCtrlDeviceDict.Clear();
             NxrSDKApi.Instance.ControllerStatusChangeEvent += OnControllerStatusChangeEvent;
@@ -97,6 +104,15 @@ namespace Nxr.Internal
             }
         }
 
+        public NxrLaserPointer GetControllerLaser(InteractionManager.NACTION_HAND_TYPE hAND_TYPE) {
+            if (DualCtrlDeviceDict.ContainsKey(hAND_TYPE))
+            {
+                NxrTrackedDevice nxrTrackedDevice = DualCtrlDeviceDict[hAND_TYPE];
+                return nxrTrackedDevice.GetLaserPointer();
+            }
+            return null;
+        }
+
         void OnControllerStatusChangeEvent(InteractionManager.NACTION_HAND_TYPE handType, bool isConnected,
             bool isSixDofController)
         {
@@ -110,17 +126,17 @@ namespace Nxr.Internal
             if (handType == InteractionManager.NACTION_HAND_TYPE.HAND_LEFT && isConnected)
             {
                 Debug.Log("---CreateControllerModel---Left-");
-                LoadControllerModel(NxrInstantNativeApi.NibiruDeviceType.LeftController, "Controller6DofLeft");
+                LoadControllerModel(NxrInstantNativeApi.HoloeverDeviceType.LeftController, "Controller6DofLeft");
             }
 
             if (handType == InteractionManager.NACTION_HAND_TYPE.HAND_RIGHT && isConnected)
             {
                 Debug.Log("---CreateControllerModel---Right-");
-                LoadControllerModel(NxrInstantNativeApi.NibiruDeviceType.RightController, "Controller6DofRight");
+                LoadControllerModel(NxrInstantNativeApi.HoloeverDeviceType.RightController, "Controller6DofRight");
             }
         }
 
-        private void LoadControllerModel(NxrInstantNativeApi.NibiruDeviceType nibiruDeviceType, string objName)
+        private void LoadControllerModel(NxrInstantNativeApi.HoloeverDeviceType holoeverDeviceType, string objName)
         {
             if (InteractionManager.IsSupportControllerModel())
             {
@@ -138,7 +154,7 @@ namespace Nxr.Internal
                 }
 
                 InteractionManager.ControllerConfig mControllerConfig = InteractionManager.GetControllerConfig();
-                CreateControllerModel(nibiruDeviceType, objName, mControllerConfig);
+                CreateControllerModel(holoeverDeviceType, objName, mControllerConfig);
             }
             else
             {
@@ -160,9 +176,9 @@ namespace Nxr.Internal
                 var rightObj = Instantiate(leftObj, mGameObject.transform) as GameObject;
                 rightObj.name = "RightModel";
                 NxrTrackedDevice trackedDeviceLeft = leftObj.GetComponent<NxrTrackedDevice>();
-                trackedDeviceLeft.deviceType = NxrInstantNativeApi.NibiruDeviceType.LeftController;
+                trackedDeviceLeft.deviceType = NxrInstantNativeApi.HoloeverDeviceType.LeftController;
                 NxrTrackedDevice trackedDeviceRight = rightObj.GetComponent<NxrTrackedDevice>();
-                trackedDeviceLeft.deviceType = NxrInstantNativeApi.NibiruDeviceType.RightController;
+                trackedDeviceLeft.deviceType = NxrInstantNativeApi.HoloeverDeviceType.RightController;
                 if (!DualCtrlDeviceDict.ContainsKey(InteractionManager.NACTION_HAND_TYPE.HAND_LEFT))
                 {
                     DualCtrlDeviceDict.Add(InteractionManager.NACTION_HAND_TYPE.HAND_LEFT, trackedDeviceLeft);
@@ -185,15 +201,15 @@ namespace Nxr.Internal
             }
         }
 
-        private void CreateControllerModel(NxrInstantNativeApi.NibiruDeviceType deviceType, string objName,
+        private void CreateControllerModel(NxrInstantNativeApi.HoloeverDeviceType deviceType, string objName,
             InteractionManager.ControllerConfig mControllerConfig)
         {
             string objPath = mControllerConfig.objPath;
-            if (deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController)
+            if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController)
             {
                 objPath = mControllerConfig.leftCtrlObjPath;
             }
-            else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+            else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
             {
                 objPath = mControllerConfig.rightCtrlObjPath;
             }
@@ -266,7 +282,7 @@ namespace Nxr.Internal
 
             powerGO.AddComponent<MeshFilter>().mesh = quadMesh;
             powerGO.AddComponent<MeshCollider>();
-            powerGO.AddComponent<NibiruControllerPower>();
+            powerGO.AddComponent<HoloeverControllerPower>();
 
             powerGO.transform.localPosition = new Vector3(mControllerConfig.batteryPosition[0],
                 mControllerConfig.batteryPosition[1]
@@ -289,7 +305,7 @@ namespace Nxr.Internal
                 trackedDevice.ReloadLaserPointer(mNxrLaserPointer);
                 trackedDevice.deviceType = deviceType;
                 InteractionManager.NACTION_HAND_TYPE mHandType =
-                    deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController
+                    deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController
                         ? InteractionManager.NACTION_HAND_TYPE.HAND_LEFT
                         : InteractionManager.NACTION_HAND_TYPE.HAND_RIGHT;
 
@@ -303,12 +319,12 @@ namespace Nxr.Internal
                 }
             }
 
-            if (deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController)
+            if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController)
             {
                 leftObj = go;
                 leftModelGo = modelGO;
             }
-            else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+            else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
             {
                 rightObj = go;
                 rightModelGo = modelGO;

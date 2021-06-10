@@ -5,7 +5,7 @@ using System.IO;
 using System.Xml;
 using UnityEngine;
 
-namespace NibiruTask
+namespace HoloeverTask
 {
 
     public class InteractionManager
@@ -680,7 +680,7 @@ namespace NibiruTask
             if (mControllerType == NACTION_CONTROLLER_TYPE.CONTROL_3DOF &&
                 (connectLeftHand == 1 || connectRightHand == 1))
             {
-                NibiruAxis.NxrPlayerCtrl mNxrPlayerCtrl = NibiruAxis.NxrPlayerCtrl.Instance;
+                HoloeverAxis.NxrPlayerCtrl mNxrPlayerCtrl = HoloeverAxis.NxrPlayerCtrl.Instance;
                 if (mNxrPlayerCtrl != null)
                 {
                     // 3dof手柄显示

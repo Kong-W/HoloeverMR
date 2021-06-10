@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using NibiruAxis;
+using HoloeverAxis;
 using Nxr.Internal;
 
-namespace NibiruTask
+namespace HoloeverTask
 {
     public class NxrArmModel : NxrBaseArmModel
     {
@@ -197,7 +197,7 @@ namespace NibiruTask
 
             handedMultiplier.Set(0, 1, 1);
             //设置左右手
-            if (nvrTrackedDevice.deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+            if (nvrTrackedDevice.deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
             {
                 handedMultiplier.x = 1.0f;
             }

@@ -1,4 +1,4 @@
-﻿namespace NibiruTask
+﻿namespace HoloeverTask
 {
     public class CBikeEvent
     {

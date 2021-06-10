@@ -28,11 +28,11 @@ namespace Nxr.Internal
         public bool addRigidBody = false;
         public event PointerEventHandler PointerIn;
         public event PointerEventHandler PointerOut;
-        public NxrInstantNativeApi.NibiruDeviceType deviceType = NxrInstantNativeApi.NibiruDeviceType.RightController;
+        public NxrInstantNativeApi.HoloeverDeviceType deviceType = NxrInstantNativeApi.HoloeverDeviceType.RightController;
 
         Transform previousContact = null;
 
-        float zDistance = 10.0f;
+        float zDistance = 15.0f;
 
         Transform cacheTransform;
 

@@ -8,13 +8,13 @@ namespace Nxr.Internal
     {
         #region Struct
         [StructLayout(LayoutKind.Sequential)]
-        public struct Nibiru_Pose
+        public struct Holoever_Pose
         {
             public Vector3 position;
             public Quaternion rotation;
         }
         [StructLayout(LayoutKind.Sequential)]
-        public struct Nibiru_ControllerStates
+        public struct Holoever_ControllerStates
         {
             public uint battery; // 电量
             public uint connectStatus;//连接状态 : hmd/left/right
@@ -25,7 +25,7 @@ namespace Nxr.Internal
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct Nibiru_Config
+        public struct Holoever_Config
         {
             public uint controllerType; //0=nolo,2=3dof,3=none
             public float ipd;
@@ -51,7 +51,7 @@ namespace Nxr.Internal
         }
         #endregion
 
-        public enum NibiruDeviceType
+        public enum HoloeverDeviceType
         {
             Hmd = 0,
             LeftController,
@@ -60,7 +60,7 @@ namespace Nxr.Internal
         }
 
         // 手柄类型
-        public enum NibiruControllerId
+        public enum HoloeverControllerId
         {
             // 0=NOLO,1=...,2=3DOF Controller,3=NONE
             NOLO, EXPAND, NORMAL_3DOF, NONE
@@ -94,17 +94,17 @@ namespace Nxr.Internal
         public static extern void Cleanup();
 
         [DllImport(dllName)]
-        public static extern Nibiru_Config GetNibiruConfig();
+        public static extern Holoever_Config GetHoloeverConfig();
 
         // 手柄Pose
         [DllImport(dllName)]
-        public static extern Nibiru_Pose GetPoseByDeviceType(NibiruDeviceType type);
+        public static extern Holoever_Pose GetPoseByDeviceType(HoloeverDeviceType type);
 
         [DllImport(dllName)]
-        public static extern Nibiru_ControllerStates GetControllerStates(NibiruDeviceType type);
+        public static extern Holoever_ControllerStates GetControllerStates(HoloeverDeviceType type);
 
         [DllImport(dllName)]
-        public static extern void SetNibiruConfigCallback(NxrViewer.NibiruConfigCallback callback);
+        public static extern void SetHoloeverConfigCallback(NxrViewer.HoloeverConfigCallback callback);
 
         //---------------------New Api----V1-----------------
         [DllImport(dllName)]
@@ -145,14 +145,14 @@ namespace Nxr.Internal
 
         public static void Cleanup() { }
 
-        public static Nibiru_Config GetNibiruConfig() { return new Nibiru_Config(); }
+        public static Holoever_Config GetHoloeverConfig() { return new Holoever_Config(); }
 
         // 手柄Pose
-        public static Nibiru_Pose GetPoseByDeviceType(NibiruDeviceType type) { return new Nibiru_Pose(); }
+        public static Holoever_Pose GetPoseByDeviceType(HoloeverDeviceType type) { return new Holoever_Pose(); }
 
-        public static Nibiru_ControllerStates GetControllerStates(NibiruDeviceType type) { return new Nibiru_ControllerStates(); }
+        public static Holoever_ControllerStates GetControllerStates(HoloeverDeviceType type) { return new Holoever_ControllerStates(); }
 
-        public static void SetNibiruConfigCallback(NxrViewer.NibiruConfigCallback callback) { }
+        public static void SetHoloeverConfigCallback(NxrViewer.HoloeverConfigCallback callback) { }
 
         //---------------------New Api----V1-----------------
         public static void GetVersionInfo(ref int apiVersion, ref int driverVersion) { }

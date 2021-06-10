@@ -25,15 +25,15 @@ namespace Nxr.Internal
 
         int BackgroundLayer0 = 8;
 
-        NibiruService nibiruService;
+        HoloeverService holoeverService;
         // Use this for initialization
         void Start()
         {
             Debug.Log("Camera PreView Texture [" + PreTextureWidth + "," + PreTextureHeight + "]");
-            nibiruService = NxrViewer.Instance.GetNibiruService();
-            if (nibiruService != null)
+            holoeverService = NxrViewer.Instance.GetHoloeverService();
+            if (holoeverService != null)
             {
-                cameraPreviewHelper = nibiruService.InitCameraPreviewHelper();
+                cameraPreviewHelper = holoeverService.InitCameraPreviewHelper();
             }
 
             Renderer renderer = GetComponent<Renderer>();
@@ -96,7 +96,7 @@ namespace Nxr.Internal
                 }
             }
 
-            bool updatePreViewTexture = EnablePreView && nibiruService != null && nibiruService.IsMarkerRecognizeRunning && inited;
+            bool updatePreViewTexture = EnablePreView && holoeverService != null && holoeverService.IsMarkerRecognizeRunning && inited;
             if (postRenderObject == null)
             {
                 postRenderObject = GameObject.Find("NxrPostRender").GetComponent<NxrPostRender>();
@@ -111,9 +111,9 @@ namespace Nxr.Internal
 
         void OnDestroy()
         {
-            if (nibiruService != null)
+            if (holoeverService != null)
             {
-                nibiruService.StopCamereaPreView();
+                holoeverService.StopCamereaPreView();
             }
             if (cameraPreviewHelper != null)
             {

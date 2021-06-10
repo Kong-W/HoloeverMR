@@ -1,4 +1,4 @@
-﻿namespace NibiruTask
+﻿namespace HoloeverTask
 {
     public class CKeyEvent
     { 
@@ -25,7 +25,7 @@
         public static int KEYCODE_BUTTON_THUMBR = 107;
         public static int KEYCODE_BUTTON_START = 108;
         public static int KEYCODE_BUTTON_SELECT = 109;
-        public static int KEYCODE_BUTTON_NIBIRU = 110;
+        public static int KEYCODE_BUTTON_HOLOEVER = 110;
         public static int KEYCODE_BUTTON_HOME = 3;
         public static int KEYCODE_BUTTON_APP = 255;
         public static int KEYCODE_BACK = 255;
@@ -69,7 +69,7 @@
             KEYCODE_BUTTON_THUMBR,
             KEYCODE_BUTTON_START,
             KEYCODE_BUTTON_SELECT,
-            KEYCODE_BUTTON_NIBIRU,
+            KEYCODE_BUTTON_HOLOEVER,
             KEYCODE_BUTTON_HOME,
             KEYCODE_BUTTON_APP,
             KEYCODE_CONTROLLER_TOUCHPAD_TOUCH,

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System;
-using NibiruAxis;
+using HoloeverAxis;
 
-namespace NibiruTask
+namespace HoloeverTask
 {
     public class ControllerAndroid{
 
@@ -295,7 +295,7 @@ namespace NibiruTask
             }
 
 #endif
-            if (NibiruAxis.NxrPlayerCtrl.Instance != null && NibiruAxis.NxrPlayerCtrl.Instance.debugInEditor) return true;
+            if (HoloeverAxis.NxrPlayerCtrl.Instance != null && HoloeverAxis.NxrPlayerCtrl.Instance.debugInEditor) return true;
             return false;
         }
 

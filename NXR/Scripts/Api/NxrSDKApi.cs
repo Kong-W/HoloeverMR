@@ -1,8 +1,6 @@
-﻿using System;
-using NibiruTask;
+﻿using HoloeverTask;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Nxr.Internal
 {
@@ -43,12 +41,12 @@ namespace Nxr.Internal
         public bool IsInXRMode { set; get; }
 
         // Controller connection status change : handType 0=left, 1=right
-        public delegate void ControllerStatusChange(NibiruTask.InteractionManager.NACTION_HAND_TYPE handType,
+        public delegate void ControllerStatusChange(HoloeverTask.InteractionManager.NACTION_HAND_TYPE handType,
             bool isConnected, bool isSixDofController);
 
         public event ControllerStatusChange ControllerStatusChangeEvent;
 
-        public void ExecuteControllerStatusChangeEvent(NibiruTask.InteractionManager.NACTION_HAND_TYPE handType,
+        public void ExecuteControllerStatusChangeEvent(HoloeverTask.InteractionManager.NACTION_HAND_TYPE handType,
             bool isConnected, bool isSixDofController)
         {
             Debug.Log("handtype=" + handType + "," + "isConnected=" + isConnected + "," + "isSixDofController=" + isSixDofController);
@@ -63,7 +61,7 @@ namespace Nxr.Internal
                 Debug.Log("ControllerTipState:" + controllerTipState);
                 if (controllerTipState == 0)
                 {
-                    NibiruRemindBox.Instance.CalibrationDelay();
+                    HoloeverRemindBox.Instance.CalibrationDelay();
                     NxrViewer.Instance.GetDevice().SetControllerTipState(1);
                 }
             }
@@ -72,12 +70,12 @@ namespace Nxr.Internal
         /// <summary>
         /// The Trigger key can switch the main controller, only the main controller can emit rays {global variable}.
         /// </summary>
-        NxrInstantNativeApi.NibiruDeviceType sixDofControllerPrimaryDeviceType;
+        NxrInstantNativeApi.HoloeverDeviceType sixDofControllerPrimaryDeviceType;
 
         /// <summary>
         /// Current sixDof controller primary device type.(LeftController or RightController)
         /// </summary>
-        public NxrInstantNativeApi.NibiruDeviceType SixDofControllerPrimaryDeviceType
+        public NxrInstantNativeApi.HoloeverDeviceType SixDofControllerPrimaryDeviceType
         {
             set
             {

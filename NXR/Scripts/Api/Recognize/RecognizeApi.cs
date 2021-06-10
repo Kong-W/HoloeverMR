@@ -54,8 +54,8 @@ namespace Nxr.Internal
         }
 
         private AndroidJavaObject androidActivity;
-        private AndroidJavaClass nibiruTensorManagerClass;
-        private AndroidJavaObject nibiruTensorManager;
+        private AndroidJavaClass holoeverTensorManagerClass;
+        private AndroidJavaObject holoeverTensorManager;
         public void Init()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -76,9 +76,9 @@ namespace Nxr.Internal
         if(androidActivity != null)
         {
             AndroidJavaObject contextObject = androidActivity.Call<AndroidJavaObject>("getApplicationContext");
-            nibiruTensorManagerClass = new AndroidJavaClass(managerClassName);
-            nibiruTensorManager = nibiruTensorManagerClass.CallStatic<AndroidJavaObject>("getInstance");
-            nibiruTensorManager.Call("init", contextObject, new NibiruVerifyListener(VerifyStatusCallback));
+            holoeverTensorManagerClass = new AndroidJavaClass(managerClassName);
+            holoeverTensorManager = holoeverTensorManagerClass.CallStatic<AndroidJavaObject>("getInstance");
+            holoeverTensorManager.Call("init", contextObject, new HoloeverVerifyListener(VerifyStatusCallback));
         }
 #endif
             Debug.Log("RecognizeApi init succ.");
@@ -86,7 +86,7 @@ namespace Nxr.Internal
 
         public void StartRecognize(OnRecognizeSuccess succ, OnRecognizeFailed failed)
         {
-            if (nibiruTensorManager != null)
+            if (holoeverTensorManager != null)
             {
                 AndroidJavaClass unityHelperClass = new AndroidJavaClass(unityHelperClassName);
                 AndroidJavaObject unityHelperObject = unityHelperClass.CallStatic<AndroidJavaObject>("getInstance");
@@ -105,14 +105,14 @@ namespace Nxr.Internal
                 AndroidJavaObject surfaceTextureObject = unityHelperObject.Call<AndroidJavaObject>("getSurfaceTexture");
 
 
-                nibiruTensorManager.Call("start", surfaceTextureObject, new NibiruRecognizeCallback(this, succ, failed));
+                holoeverTensorManager.Call("start", surfaceTextureObject, new HoloeverRecognizeCallback(this, succ, failed));
                 stoped = false;
                 destroyed = false;
 
-                NibiruService nibiruService = NxrViewer.Instance.GetNibiruService();
-                if(nibiruService != null)
+                HoloeverService holoeverService = NxrViewer.Instance.GetHoloeverService();
+                if(holoeverService != null)
                 {
-                    nibiruService.SetCameraPreviewing(true);
+                    holoeverService.SetCameraPreviewing(true);
                 }
                 Debug.Log("RecognizeApi start succ.");
             }
@@ -121,14 +121,14 @@ namespace Nxr.Internal
         private bool stoped;
         public void StopRecognize()
         {
-            if (nibiruTensorManager != null)
+            if (holoeverTensorManager != null)
             {
                 stoped = true;
-                nibiruTensorManager.Call("stop");
-                NibiruService nibiruService = NxrViewer.Instance.GetNibiruService();
-                if (nibiruService != null)
+                holoeverTensorManager.Call("stop");
+                HoloeverService holoeverService = NxrViewer.Instance.GetHoloeverService();
+                if (holoeverService != null)
                 {
-                    nibiruService.SetCameraPreviewing(false);
+                    holoeverService.SetCameraPreviewing(false);
                 }
             }
         }
@@ -136,10 +136,10 @@ namespace Nxr.Internal
         private bool destroyed = false;
         public void OnDestroy()
         {
-            if (!destroyed && nibiruTensorManager != null)
+            if (!destroyed && holoeverTensorManager != null)
             {
                 destroyed = true;
-                nibiruTensorManager.Call("destroy");
+                holoeverTensorManager.Call("destroy");
             }
         }
 
@@ -162,10 +162,10 @@ namespace Nxr.Internal
 
 
         public delegate void OnNVRVerifyListener(int status);
-        public class NibiruVerifyListener : AndroidJavaProxy
+        public class HoloeverVerifyListener : AndroidJavaProxy
         {
             OnNVRVerifyListener _OnNVRVerifyListener;
-            public NibiruVerifyListener(OnNVRVerifyListener onNVRVerifyListener) : base("com.nibiru.lib.vr.listener.NVRVerifyListener")
+            public HoloeverVerifyListener(OnNVRVerifyListener onNVRVerifyListener) : base("com.nibiru.lib.vr.listener.NVRVerifyListener")
             {
                 _OnNVRVerifyListener = onNVRVerifyListener;
             }
@@ -190,12 +190,12 @@ namespace Nxr.Internal
 
         public delegate void OnRecognizeFailed(string message);
         public delegate void OnRecognizeSuccess(List<Recognition> recognitionData);
-        public class NibiruRecognizeCallback : AndroidJavaProxy
+        public class HoloeverRecognizeCallback : AndroidJavaProxy
         {
             RecoginizeApi _RecognizeApi;
             OnRecognizeSuccess _OnRecognizeSuccess;
             OnRecognizeFailed _OnRecognizeFailed;
-            public NibiruRecognizeCallback(RecoginizeApi recognizeApi, OnRecognizeSuccess succ, OnRecognizeFailed failed) : base("com.nibiru.tensorflow.core.NibiruTensorCallback")
+            public HoloeverRecognizeCallback(RecoginizeApi recognizeApi, OnRecognizeSuccess succ, OnRecognizeFailed failed) : base("com.nibiru.tensorflow.core.NibiruTensorCallback")
             {
                 _RecognizeApi = recognizeApi;
                 _OnRecognizeSuccess = succ;

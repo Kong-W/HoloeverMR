@@ -210,7 +210,7 @@ namespace Nxr.Internal
             string text = NxrGlobal.offaxisDistortionConfigData;
             if (text == null || text.Length == 0)
             {
-                TextAsset taCN = Resources.Load<TextAsset>("NibiruDistortionConfig");
+                TextAsset taCN = Resources.Load<TextAsset>("HoloeverDistortionConfig");
                 text = taCN.text;
             }
 

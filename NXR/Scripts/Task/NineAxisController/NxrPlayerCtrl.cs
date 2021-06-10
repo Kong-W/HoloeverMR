@@ -1,9 +1,9 @@
-﻿using NibiruTask;
+﻿using HoloeverTask;
 using Nxr.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace NibiruAxis
+namespace HoloeverAxis
 {
     public class NxrPlayerCtrl : MonoBehaviour
     {
@@ -40,7 +40,7 @@ namespace NibiruAxis
             Debug.Log("NxrPlayerCtrl.onDeviceConnectState:" + (state == 0 ? " Connect " : " Disconnect "));
             if (state == 0)
             {
-                // NibiruRemindBox.Instance.CalibrationDelay();
+                // HoloeverRemindBox.Instance.CalibrationDelay();
                 NxrViewer.Instance.HideHeadControl();
                 NxrViewer.Instance.SwitchControllerMode(true);
             }
@@ -61,7 +61,7 @@ namespace NibiruAxis
            if(!InteractionManager.IsInteractionSDKEnabled())
             {
                 ControllerAndroid.onStart();
-                NibiruTaskApi.setOnDeviceListener(OnDeviceConnectState);
+                HoloeverTaskApi.setOnDeviceListener(OnDeviceConnectState);
                
             }
 #endif
@@ -176,15 +176,15 @@ namespace NibiruAxis
                 if (!NxrInstantNativeApi.Inited) return;
 
                 _prevStates = _currentStates;
-                NxrInstantNativeApi.NibiruDeviceType deviceTypeOf3dof =
+                NxrInstantNativeApi.HoloeverDeviceType deviceTypeOf3dof =
                     NxrControllerHelper.HandMode3DOF == NxrControllerHelper.LEFT_HAND_MODE
-                        ? NxrInstantNativeApi.NibiruDeviceType.LeftController
-                        : NxrInstantNativeApi.NibiruDeviceType.RightController;
+                        ? NxrInstantNativeApi.HoloeverDeviceType.LeftController
+                        : NxrInstantNativeApi.HoloeverDeviceType.RightController;
                 _currentStates = NxrInstantNativeApi.GetControllerStates(deviceTypeOf3dof);
 
 
-                NxrInstantNativeApi.Nibiru_Pose pose =
-                    NxrInstantNativeApi.GetPoseByDeviceType(NxrInstantNativeApi.NibiruDeviceType.RightController);
+                NxrInstantNativeApi.Holoever_Pose pose =
+                    NxrInstantNativeApi.GetPoseByDeviceType(NxrInstantNativeApi.HoloeverDeviceType.RightController);
                 mTransform.rotation =
                     new Quaternion(pose.rotation.x, pose.rotation.y, pose.rotation.z, pose.rotation.w);
 
@@ -197,21 +197,21 @@ namespace NibiruAxis
 
                 if (GetButtonDown(NxrTrackedDevice.ButtonID.TouchPad))
                 {
-                    int[] KeyAction = NibiruTaskApi.GetKeyAction();
+                    int[] KeyAction = HoloeverTaskApi.GetKeyAction();
                     KeyAction[CKeyEvent.KEYCODE_DPAD_CENTER] = 1;
                 }
 
                 if (GetButtonUp(NxrTrackedDevice.ButtonID.TouchPad))
                 {
-                    int[] KeyAction = NibiruTaskApi.GetKeyAction();
+                    int[] KeyAction = HoloeverTaskApi.GetKeyAction();
                     KeyAction[CKeyEvent.KEYCODE_DPAD_CENTER] = 0;
                 }
             }
 #endif
         }
 
-        private NxrInstantNativeApi.Nibiru_ControllerStates _prevStates;
-        private NxrInstantNativeApi.Nibiru_ControllerStates _currentStates;
+        private NxrInstantNativeApi.Holoever_ControllerStates _prevStates;
+        private NxrInstantNativeApi.Holoever_ControllerStates _currentStates;
 
         bool GetButtonDown(NxrTrackedDevice.ButtonID btn)
         {
@@ -395,7 +395,7 @@ namespace NibiruAxis
 
             GameObject go = new GameObject(objName);
             NxrLaserPointer mNxrLaserPointer = go.AddComponent<NxrLaserPointer>();
-            mNxrLaserPointer.deviceType = NxrInstantNativeApi.NibiruDeviceType.RightController;
+            mNxrLaserPointer.deviceType = NxrInstantNativeApi.HoloeverDeviceType.RightController;
             go.transform.SetParent(transform);
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = new Vector3(0, 0, 0);
@@ -454,7 +454,7 @@ namespace NibiruAxis
 
             powerGO.AddComponent<MeshFilter>().mesh = quadMesh;
             powerGO.AddComponent<MeshCollider>();
-            powerGO.AddComponent<NibiruControllerPower>();
+            powerGO.AddComponent<HoloeverControllerPower>();
 
             powerGO.transform.localPosition = new Vector3(mControllerConfig.batteryPosition[0],
                 mControllerConfig.batteryPosition[1]

@@ -8,8 +8,8 @@ namespace Nxr.Internal
         void Start()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        AndroidJavaObject nibiruVR = new AndroidJavaObject("com.nibiru.lib.vr.NibiruVR");
-        nibiruVR.CallStatic("setSystemProperty", "nar.vuforia.splash.finished", "1");
+        AndroidJavaObject holoeverVR = new AndroidJavaObject("com.nibiru.lib.vr.NibiruVR");
+        holoeverVR.CallStatic("setSystemProperty", "nar.vuforia.splash.finished", "1");
 #endif
         }
 

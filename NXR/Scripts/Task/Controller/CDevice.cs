@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NibiruTask
+namespace HoloeverTask
 {
     public class CDevice
     {

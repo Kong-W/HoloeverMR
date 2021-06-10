@@ -1,21 +1,7 @@
-// Copyright 2016 Nibiru. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 using UnityEngine;
 using System.Runtime.InteropServices;
 using System;
-/// @cond
+
 namespace Nxr.Internal
 {
     public abstract class NxrDevice :
@@ -47,9 +33,9 @@ namespace Nxr.Internal
         private int _timewarp_view_number = 0;
         private bool isHeadPoseUpdated = false;
 
-        public override NibiruService GetNibiruService()
+        public override HoloeverService GetHoloeverService()
         {
-            return NxrGlobal.nibiruService;
+            return NxrGlobal.holoeverService;
         }
 
         public override void Init()
@@ -60,14 +46,14 @@ namespace Nxr.Internal
             {  
                 if (!NxrGlobal.nvrStarted)
                 {
-                    if (nibiruVRServiceId == 0)
+                    if (holoeverVRServiceId == 0)
                     {
                         // 初始化1次service
-                        nibiruVRServiceId = CreateNibiruVRService(); 
+                        holoeverVRServiceId = CreateHoloeverVRService(); 
                     }
                     _NVR_InitAPIs(NxrGlobal.useNvrSo);
                     _NVR_SetUnityVersion(version, version.Length);
-                    _NVR_Start(nibiruVRServiceId);
+                    _NVR_Start(holoeverVRServiceId);
                     SetDisplayQuality((int) NxrViewer.Instance.TextureQuality);
                     SetMultiThreadedRendering(SystemInfo.graphicsMultiThreaded);
                     Debug.LogError("graphicsMultiThreaded=" + SystemInfo.graphicsMultiThreaded);
@@ -97,9 +83,9 @@ namespace Nxr.Internal
                     }
                     NxrGlobal.nvrStarted = true;
                     // 初始化服务
-                    NibiruService nibiruService = new NibiruService();
-                    nibiruService.Init();
-                    NxrGlobal.nibiruService = nibiruService;
+                    HoloeverService holoeverService = new HoloeverService();
+                    holoeverService.Init();
+                    NxrGlobal.holoeverService = holoeverService;
 
                     //
                     NxrSDKApi.Instance.IsSptEyeLocalRp = IsSptEyeLocalRotPos();
@@ -196,7 +182,7 @@ namespace Nxr.Internal
 
         public override void EnterARMode() {
             Debug.Log("NxrDevice->EnterARMode");
-            NxrPluginEvent.Issue(NibiruRenderEventType.BeginVR);
+            NxrPluginEvent.Issue(HoloeverRenderEventType.BeginVR);
             _NVR_ApplicationResume();
             // 更新参数信息
             UpdateScreenData();
@@ -213,7 +199,7 @@ namespace Nxr.Internal
                 if (NxrViewer.USE_DTR)
                 {
                     NxrSDKApi.Instance.IsInXRMode = false;
-                    NxrPluginEvent.Issue(NibiruRenderEventType.EndVR);
+                    NxrPluginEvent.Issue(HoloeverRenderEventType.EndVR);
                     _NVR_ApplicationPause();
                 }
             }
@@ -223,7 +209,7 @@ namespace Nxr.Internal
                 if (NxrViewer.USE_DTR)
                 {
                     NxrSDKApi.Instance.IsInXRMode = true;
-                    NxrPluginEvent.Issue(NibiruRenderEventType.BeginVR);
+                    NxrPluginEvent.Issue(HoloeverRenderEventType.BeginVR);
                     _NVR_ApplicationResume();
                     UpdateScreenData();
                 }
@@ -242,7 +228,7 @@ namespace Nxr.Internal
             if (NxrViewer.USE_DTR && !applicationQuited)
             {  // 关闭陀螺仪
                 Input.gyro.enabled = false;
-                NxrPluginEvent.Issue(NibiruRenderEventType.ShutDown);
+                NxrPluginEvent.Issue(HoloeverRenderEventType.ShutDown);
                 _NVR_ApplicationDestory();
             } 
             applicationQuited = true;
@@ -546,4 +532,3 @@ namespace Nxr.Internal
         private static extern void _NVR_GetEyeLocalRotPos(float[] leftEyeRot, float[] leftEyePos, float[] rightEyeRot, float[] rightEyePos);
     }
 }
-/// @endcond

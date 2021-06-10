@@ -82,7 +82,7 @@
 
         public static bool isMarkerVisible = false;
 
-        public static NibiruService nibiruService = null;
+        public static HoloeverService holoeverService = null;
 
         public static string KeyEvent_KEYCODE_ALT_LEFT = "57";// 左侧按键
         public static string KeyEvent_KEYCODE_MEDIA_RECORD = "130";// 右侧按键

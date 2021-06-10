@@ -8,7 +8,7 @@ namespace Nxr.Internal
     {
 
         [DrawGizmo(GizmoType.InSelectionHierarchy)] // Draw the gizmo if it 
-        static void RenderARTrackedObjectGizmo(NibiruMarker marker, GizmoType gizmoType)
+        static void RenderARTrackedObjectGizmo(HoloeverMarker marker, GizmoType gizmoType)
         {
             bool selected = (gizmoType & GizmoType.Active) != 0;
             if (selected)

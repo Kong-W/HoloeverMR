@@ -2,7 +2,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using NibiruAxis;
+using HoloeverAxis;
 
 namespace Nxr.Internal
 {
@@ -27,24 +27,24 @@ namespace Nxr.Internal
             if (NxrViewer.Instance.RemoteDebug)
             {
                 NxrViewer.Instance.InitialRecenter = false;
-                NibiruEmulatorManager nibiruEmulatorManager = NibiruEmulatorManager.Instance;
-                nibiruEmulatorManager.OnConfigDataEvent += ConfigDataLoaded;
-                nibiruEmulatorManager.OnHmdPoseDataEvent += HmdPoseDataEvent;
-                nibiruEmulatorManager.OnHmdStatusEvent += HmdStatusEvent;
-                nibiruEmulatorManager.OnControllerPoseDataEvent += ControllerPoseDataEvent;
+                HoloeverEmulatorManager holoeverEmulatorManager = HoloeverEmulatorManager.Instance;
+                holoeverEmulatorManager.OnConfigDataEvent += ConfigDataLoaded;
+                holoeverEmulatorManager.OnHmdPoseDataEvent += HmdPoseDataEvent;
+                holoeverEmulatorManager.OnHmdStatusEvent += HmdStatusEvent;
+                holoeverEmulatorManager.OnControllerPoseDataEvent += ControllerPoseDataEvent;
             }
         }
 
-        private void ControllerPoseDataEvent(NibiruEmulatorClientSocket.ControllerPoseData data)
+        private void ControllerPoseDataEvent(HoloeverEmulatorClientSocket.ControllerPoseData data)
         {
             Loom.QueueOnMainThread((param) => {
-                NibiruEmulatorClientSocket.ControllerPoseData controllerPoseData = (NibiruEmulatorClientSocket.ControllerPoseData) param;
-                NibiruEmulatorClientSocket.TrackingQuat quat = controllerPoseData.right_controller_Pose_Orientation;
+                HoloeverEmulatorClientSocket.ControllerPoseData controllerPoseData = (HoloeverEmulatorClientSocket.ControllerPoseData) param;
+                HoloeverEmulatorClientSocket.TrackingQuat quat = controllerPoseData.right_controller_Pose_Orientation;
                 NxrPlayerCtrl.Instance.EditorRemoteQuat = new Quaternion(quat.x, quat.y, quat.z, quat.w); 
             }, data);
         }
 
-        private void HmdStatusEvent(NibiruEmulatorClientSocket.HmdStatusData data)
+        private void HmdStatusEvent(HoloeverEmulatorClientSocket.HmdStatusData data)
         {
             bool IsControllerConnect = data.controllerStatus == 1;
             Loom.QueueOnMainThread((param) => {
@@ -52,16 +52,16 @@ namespace Nxr.Internal
             }, IsControllerConnect);
         }
 
-        private void HmdPoseDataEvent(NibiruEmulatorClientSocket.HmdPoseData data)
+        private void HmdPoseDataEvent(HoloeverEmulatorClientSocket.HmdPoseData data)
         {
             Loom.QueueOnMainThread((param) => {
-                NibiruEmulatorClientSocket.TrackingQuat quat = ((NibiruEmulatorClientSocket.HmdPoseData) param).HeadPose_Pose_Orientation;
-                NibiruEmulatorClientSocket.TrackingVector3 pos = ((NibiruEmulatorClientSocket.HmdPoseData)param).HeadPose_Pose_Position;
+                HoloeverEmulatorClientSocket.TrackingQuat quat = ((HoloeverEmulatorClientSocket.HmdPoseData) param).HeadPose_Pose_Orientation;
+                HoloeverEmulatorClientSocket.TrackingVector3 pos = ((HoloeverEmulatorClientSocket.HmdPoseData)param).HeadPose_Pose_Position;
                 remoteQaut = new Quaternion(quat.x, quat.y, quat.z, quat.w);
             }, data);
         }
 
-        private void ConfigDataLoaded(NibiruEmulatorClientSocket.OpticalConfigData data)
+        private void ConfigDataLoaded(HoloeverEmulatorClientSocket.OpticalConfigData data)
         {
             if (!loadConfigData)
             {
@@ -130,7 +130,7 @@ namespace Nxr.Internal
             // ÊÖ±ú¼üÖµ×´Ì¬
             if (NxrInstantNativeApi.Inited)
             {
-                NxrInstantNativeApi.Nibiru_Pose pose = NxrInstantNativeApi.GetPoseByDeviceType(NxrInstantNativeApi.NibiruDeviceType.Hmd);
+                NxrInstantNativeApi.Holoever_Pose pose = NxrInstantNativeApi.GetPoseByDeviceType(NxrInstantNativeApi.HoloeverDeviceType.Hmd);
                 if (pose.rotation.w == 0)
                 {
                     pose.rotation.w = 1;

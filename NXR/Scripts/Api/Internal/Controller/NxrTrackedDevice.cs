@@ -1,5 +1,5 @@
-﻿using NibiruAxis;
-using NibiruTask;
+﻿using HoloeverAxis;
+using HoloeverTask;
 using UnityEngine;
 
 namespace Nxr.Internal
@@ -22,12 +22,12 @@ namespace Nxr.Internal
             InternalTrigger = 8,
         }
 
-        public NxrInstantNativeApi.NibiruDeviceType deviceType;
-        NxrInstantNativeApi.Nibiru_ControllerStates _prevStates;
-        NxrInstantNativeApi.Nibiru_ControllerStates _currentStates;
+        public NxrInstantNativeApi.HoloeverDeviceType deviceType;
+        NxrInstantNativeApi.Holoever_ControllerStates _prevStates;
+        NxrInstantNativeApi.Holoever_ControllerStates _currentStates;
 
         NxrControllerModel controllerModel;
-        NibiruControllerPower controllerPower;
+        HoloeverControllerPower controllerPower;
         NxrLaserPointer laserPointer;
         public bool isGamePad;
         public bool DebugInEditor;
@@ -60,15 +60,15 @@ namespace Nxr.Internal
             if (!isGamePad)
             {
                 controllerModel = GetComponentInChildren<NxrControllerModel>();
-                controllerPower = GetComponentInChildren<NibiruControllerPower>();
+                controllerPower = GetComponentInChildren<HoloeverControllerPower>();
 
                 if (controllerModel != null) controllerModel.gameObject.SetActive(false);
                 if (controllerPower != null) controllerPower.gameObject.SetActive(false);
             }
 #if UNITY_ANDROID
-            NibiruTaskApi.deviceConnectState += OnDeviceConnectState;
-            _currentStates = new NxrInstantNativeApi.Nibiru_ControllerStates();
-            _prevStates = new NxrInstantNativeApi.Nibiru_ControllerStates();
+            HoloeverTaskApi.deviceConnectState += OnDeviceConnectState;
+            _currentStates = new NxrInstantNativeApi.Holoever_ControllerStates();
+            _prevStates = new NxrInstantNativeApi.Holoever_ControllerStates();
             _currentStates.connectStatus = 0;
             _prevStates.connectStatus = 0;
 
@@ -87,22 +87,22 @@ namespace Nxr.Internal
                 laserPointer.PointerOut -= PointerOutEventHandler;
             }
 #if UNITY_ANDROID
-            NibiruTaskApi.deviceConnectState -= OnDeviceConnectState;
+            HoloeverTaskApi.deviceConnectState -= OnDeviceConnectState;
 #endif
         }
 
         private int GetNoloType()
         {
             int noloType = (int) CDevice.NOLO_TYPE.NONE;
-            if (deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController)
+            if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController)
             {
                 noloType = (int) CDevice.NOLO_TYPE.LEFT;
             }
-            else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+            else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
             {
                 noloType = (int) CDevice.NOLO_TYPE.RIGHT;
             }
-            else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.Hmd)
+            else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.Hmd)
             {
                 noloType = (int) CDevice.NOLO_TYPE.HEAD;
             }
@@ -272,15 +272,15 @@ namespace Nxr.Internal
                     // 3dof手柄左右手模式切换
                     if (!IsConneted())
                     {
-                        _currentStates = NxrInstantNativeApi.GetControllerStates(NxrInstantNativeApi.NibiruDeviceType.LeftController);
+                        _currentStates = NxrInstantNativeApi.GetControllerStates(NxrInstantNativeApi.HoloeverDeviceType.LeftController);
                         if (!IsConneted())
                         {
-                            deviceType = NxrInstantNativeApi.NibiruDeviceType.RightController;
+                            deviceType = NxrInstantNativeApi.HoloeverDeviceType.RightController;
                         }
                         else
                         {
                             NxrControllerHelper.HandMode3DOF = NxrControllerHelper.LEFT_HAND_MODE;
-                            deviceType = NxrInstantNativeApi.NibiruDeviceType.LeftController;
+                            deviceType = NxrInstantNativeApi.HoloeverDeviceType.LeftController;
                             Debug.Log("Current 3dof HandMode is Left !!!");
                         }
                     }
@@ -290,11 +290,11 @@ namespace Nxr.Internal
                 {
                     controllerModel.gameObject.SetActive(false);
                     laserPointer.holder.SetActive(false);
-                    if (deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController)
+                    if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController)
                     {
                         NxrControllerHelper.IsLeftNoloControllerConnected = false;
                     }
-                    else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+                    else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
                     {
                         NxrControllerHelper.IsRightNoloControllerConnected = false;
                     }
@@ -305,13 +305,13 @@ namespace Nxr.Internal
                     controllerModel.gameObject.SetActive(true);
                     laserPointer.holder.SetActive(true);
 
-                    if (NxrControllerHelper.ControllerType == (int)NxrInstantNativeApi.NibiruControllerId.NOLO)
+                    if (NxrControllerHelper.ControllerType == (int)NxrInstantNativeApi.HoloeverControllerId.NOLO)
                     {
-                        if (deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController)
+                        if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController)
                         {
                             NxrControllerHelper.IsLeftNoloControllerConnected = true;
                         }
-                        else if (deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+                        else if (deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
                         {
                             NxrControllerHelper.IsRightNoloControllerConnected = true;
                         }
@@ -325,7 +325,7 @@ namespace Nxr.Internal
                 }
                 else if (IsConneted() && isGamePad && !NxrControllerHelper.Is3DofControllerConnected)
                 {
-                    if (NxrControllerHelper.ControllerType == (int)NxrInstantNativeApi.NibiruControllerId.NORMAL_3DOF)
+                    if (NxrControllerHelper.ControllerType == (int)NxrInstantNativeApi.HoloeverControllerId.NORMAL_3DOF)
                     {
                         NxrControllerHelper.Is3DofControllerConnected = true;
                     }
@@ -334,7 +334,7 @@ namespace Nxr.Internal
 
                 if (!isGamePad)
                 {
-                    NxrInstantNativeApi.Nibiru_Pose pose = NxrInstantNativeApi.GetPoseByDeviceType(deviceType);
+                    NxrInstantNativeApi.Holoever_Pose pose = NxrInstantNativeApi.GetPoseByDeviceType(deviceType);
                     // NOLO 非3DOF
                     transform.localPosition = pose.position;
                     transform.localRotation = new Quaternion(pose.rotation.x, pose.rotation.y, pose.rotation.z, pose.rotation.w);
@@ -392,7 +392,7 @@ namespace Nxr.Internal
             }
 
             // N
-            int btnNibiru = curState[CKeyEvent.KEYCODE_BUTTON_NIBIRU];
+            int btnHoloever = curState[CKeyEvent.KEYCODE_BUTTON_HOLOEVER];
             int btnStart = curState[CKeyEvent.KEYCODE_BUTTON_START];
             // Side A/B
             int btnSelect = curState[CKeyEvent.KEYCODE_BUTTON_SELECT];
@@ -469,7 +469,7 @@ namespace Nxr.Internal
             }
 
             //Debug.LogError("=====>" + _currentStates.buttons + "->Start=" + btnStart +
-            //   "->Nibiru=" + btnNibiru +
+            //   "->Holoever=" + btnHoloever +
             //   "->Select=" + btnSelect +
             //   "->App=" + btnApp +
             //   "->Center=" + btnCenter +

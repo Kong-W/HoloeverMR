@@ -156,10 +156,10 @@ namespace Nxr.Internal
             {
                 // 录屏
                 RenderTexture stereoScreen = cam.targetTexture;
-                if (stereoScreen != null && NxrViewer.Instance.GetNibiruService() != null)
+                if (stereoScreen != null && NxrViewer.Instance.GetHoloeverService() != null)
                 {
                     int textureId = (int)stereoScreen.GetNativeTexturePtr();
-                    bool isCapturing = NxrViewer.Instance.GetNibiruService().CaptureDrawFrame(textureId, frameId);
+                    bool isCapturing = NxrViewer.Instance.GetHoloeverService().CaptureDrawFrame(textureId, frameId);
                     if (isCapturing)
                     {
                         GL.InvalidateState();

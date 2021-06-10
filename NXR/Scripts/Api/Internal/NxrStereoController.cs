@@ -1,17 +1,3 @@
-// Copyright 2016 Nibiru. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 #if NIBIRU_VR
 #define NXR_HACK
 #endif
@@ -162,7 +148,7 @@ namespace Nxr.Internal
             if (NxrViewer.USE_DTR && NxrGlobal.supportDtr)
             {
                 // 左右眼绘制开始
-                NibiruRenderEventType eventType = eyeType == NxrViewer.Eye.Left ? NibiruRenderEventType.LeftEyeBeginFrame : NibiruRenderEventType.RightEyeBeginFrame;
+                HoloeverRenderEventType eventType = eyeType == NxrViewer.Eye.Left ? HoloeverRenderEventType.LeftEyeBeginFrame : HoloeverRenderEventType.RightEyeBeginFrame;
                 NxrPluginEvent.IssueWithData(eventType, cacheTextureId);
                 if (NxrGlobal.DEBUG_LOG_ENABLED) Debug.Log("OnPreRender.eye[" + eyeType + "]");
             }
@@ -175,7 +161,7 @@ namespace Nxr.Internal
                 if (eyeType == NxrViewer.Eye.Right && Application.isMobilePlatform)
                 {
                     if (NxrGlobal.DEBUG_LOG_ENABLED) Debug.Log("OnPostRenderListener.PrepareFrame.Right");
-                    NxrPluginEvent.Issue(NibiruRenderEventType.PrepareFrame);
+                    NxrPluginEvent.Issue(HoloeverRenderEventType.PrepareFrame);
                 }
                 return;
             }
@@ -183,7 +169,7 @@ namespace Nxr.Internal
             if (NxrViewer.USE_DTR && NxrGlobal.supportDtr)
             {
                 // 左右眼绘制结束
-                NibiruRenderEventType eventType = eyeType == NxrViewer.Eye.Left ? NibiruRenderEventType.LeftEyeEndFrame : NibiruRenderEventType.RightEyeEndFrame;
+                HoloeverRenderEventType eventType = eyeType == NxrViewer.Eye.Left ? HoloeverRenderEventType.LeftEyeEndFrame : HoloeverRenderEventType.RightEyeEndFrame;
                 // 左右眼绘制结束事件
                 // int eyeTextureId = (int)cam.targetTexture.GetNativeTexturePtr();
                 NxrPluginEvent.IssueWithData(eventType, cacheTextureId);

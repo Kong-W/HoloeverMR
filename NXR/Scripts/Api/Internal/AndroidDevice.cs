@@ -11,11 +11,11 @@ namespace Nxr.Internal
             "com.nibiru.lib.xr.unity.NibiruVRUnityService";
 
         // sdk-class
-        private const string NibiruVRClass = "com.nibiru.lib.vr.NibiruVR";
+        private const string HoloeverVRClass = "com.nibiru.lib.vr.NibiruVR";
 
-        private static AndroidJavaObject activityListener, nibiruVR;
+        private static AndroidJavaObject activityListener, holoeverVR;
 
-        AndroidJavaObject nibiruVRService = null;
+        AndroidJavaObject holoeverVRService = null;
 
         public override void Init()
         {
@@ -32,9 +32,9 @@ namespace Nxr.Internal
             {
                 activityListener = Create(ActivityListenerClass);
             }
-            if (androidActivity != null && nibiruVR == null)
+            if (androidActivity != null && holoeverVR == null)
             {
-                nibiruVR = Create(NibiruVRClass);
+                holoeverVR = Create(HoloeverVRClass);
             }
         }
 
@@ -48,10 +48,10 @@ namespace Nxr.Internal
             CallStaticMethod(activityListener, "rebootBroadcast");
         }
 
-        public override long CreateNibiruVRService()
+        public override long CreateHoloeverVRService()
         {
             string hmdType = "NONE";
-            CallStaticMethod(ref hmdType, nibiruVR, "getMetaData", androidActivity, "HMD_TYPE");
+            CallStaticMethod(ref hmdType, holoeverVR, "getMetaData", androidActivity, "HMD_TYPE");
             if (hmdType != null)
             {
                 NxrViewer.Instance.HmdType = hmdType.Equals("AR") ? HMD_TYPE.AR : (hmdType.Equals("VR") ? HMD_TYPE.VR : HMD_TYPE.NONE);
@@ -59,7 +59,7 @@ namespace Nxr.Internal
 
             string initParams = "";
             long pointer = 0;
-            CallStaticMethod(ref initParams, nibiruVR, "initNibiruVRServiceForUnity", androidActivity);
+            CallStaticMethod(ref initParams, holoeverVR, "initNibiruVRServiceForUnity", androidActivity);
             // -1207076736_0_1_1_1_20.0_20.0
             Debug.Log("initParams is " + initParams + ",hmdType is " + hmdType);
             string[] data = initParams.Split('_');
@@ -74,7 +74,7 @@ namespace Nxr.Internal
             // 6dof
             if (NxrViewer.Instance.TrackerPosition)
             {
-                CallStaticMethod(nibiruVR, "setTrackingModeForUnity", (int)TRACKING_MODE.POSITION);
+                CallStaticMethod(holoeverVR, "setTrackingModeForUnity", (int)TRACKING_MODE.POSITION);
             }
 
 
@@ -103,12 +103,12 @@ namespace Nxr.Internal
             }
 
             string channelCode = "";
-            CallStaticMethod<string>(ref channelCode, nibiruVR, "getChannelCode");
+            CallStaticMethod<string>(ref channelCode, holoeverVR, "getChannelCode");
             NxrGlobal.channelCode = channelCode;
 
             // 系统支持
             int[] allVersion = new int[] { -1, -1, -1, -1 };
-            CallStaticMethod(ref allVersion, nibiruVR, "getVersionForUnity");
+            CallStaticMethod(ref allVersion, holoeverVR, "getVersionForUnity");
             NxrGlobal.soVersion = allVersion[0];
             NxrGlobal.jarVersion = allVersion[1];
             NxrGlobal.platPerformanceLevel = allVersion[2];
@@ -135,7 +135,7 @@ namespace Nxr.Internal
 
             // 读取cardboard参数
             string cardboardParams = "";
-            CallStaticMethod<string>(ref cardboardParams, nibiruVR, "getNibiruVRConfigFull");
+            CallStaticMethod<string>(ref cardboardParams, holoeverVR, "getNibiruVRConfigFull");
             if (cardboardParams.Length > 0)
             {
                 Debug.Log("cardboardParams is " + cardboardParams);
@@ -158,7 +158,7 @@ namespace Nxr.Internal
             if (NxrGlobal.offaxisDistortionEnabled)
             {
                 string offaxisParams = "";
-                CallStaticMethod<string>(ref offaxisParams, nibiruVR, "getOffAxisDistortionConfig");
+                CallStaticMethod<string>(ref offaxisParams, holoeverVR, "getOffAxisDistortionConfig");
                 if (offaxisParams != null && offaxisParams.Length > 0)
                 {
                     NxrGlobal.offaxisDistortionConfigData = offaxisParams;
@@ -166,7 +166,7 @@ namespace Nxr.Internal
                 }
 
                 string sdkParams = "";
-                CallStaticMethod<string>(ref sdkParams, nibiruVR, "getSDKConfig");
+                CallStaticMethod<string>(ref sdkParams, holoeverVR, "getSDKConfig");
                 if (sdkParams != null && sdkParams.Length > 0)
                 {
                     NxrGlobal.sdkConfigData = sdkParams;
@@ -208,13 +208,13 @@ namespace Nxr.Internal
 
         public override void SetDisplayQuality(int level)
         {
-            CallStaticMethod(nibiruVR, "setDisplayQualityForUnity", level);
+            CallStaticMethod(holoeverVR, "setDisplayQualityForUnity", level);
         }
 
         public override bool GazeApi(GazeTag tag, string param)
         {
             bool show = false;
-            CallStaticMethod<bool>(ref show, nibiruVR, "gazeApiForUnity", (int)tag, param);
+            CallStaticMethod<bool>(ref show, holoeverVR, "gazeApiForUnity", (int)tag, param);
             return show;
         }
 
@@ -228,9 +228,9 @@ namespace Nxr.Internal
         }
         public override void SetSystemParameters(string key, string value)
         {
-            if (nibiruVR != null)
+            if (holoeverVR != null)
             {
-                CallStaticMethod(nibiruVR, "setSystemParameters", key, value);
+                CallStaticMethod(holoeverVR, "setSystemParameters", key, value);
             }
         }
 
@@ -313,46 +313,46 @@ namespace Nxr.Internal
         /// </summary>
         public override void ShowVideoPlayer(string path, int type2D3D, int mode, int decode)
         {
-            CallStaticMethod(nibiruVR, "showVideoPlayer", path, type2D3D, mode, decode);
+            CallStaticMethod(holoeverVR, "showVideoPlayer", path, type2D3D, mode, decode);
         }
 
         //public override void DismissVideoPlayer()
         //{
-        //    CallStaticMethod(nibiruVR, "dismissVideoPlayer");
+        //    CallStaticMethod(holoeverVR, "dismissVideoPlayer");
         //}
 
-        void InitNibiruVRService()
+        void InitHoloevevrVRService()
         {
-            if (nibiruVRService == null)
+            if (holoeverVRService == null)
             {
-                // getNibiruVRService
-                CallStaticMethod<AndroidJavaObject>(ref nibiruVRService, nibiruVR, "getNibiruVRService", null);
+                // getHoloeverVRService
+                CallStaticMethod<AndroidJavaObject>(ref holoeverVRService, holoeverVR, "getNibiruVRService", null);
             }
         }
 
         public override void SetIpd(float ipd)
         {
-            InitNibiruVRService();
-            if (nibiruVRService != null)
+            InitHoloevevrVRService();
+            if (holoeverVRService != null)
             {
-                CallObjectMethod(nibiruVRService, "setIpd", ipd);
+                CallObjectMethod(holoeverVRService, "setIpd", ipd);
             }
             else
             {
-                Debug.LogError("SetIpd failed, because nibiruVRService is null !!!!");
+                Debug.LogError("SetIpd failed, because holoeverVRService is null !!!!");
             }
         }
 
         public override void SetTimeWarpEnable(bool enabled)
         {
-            InitNibiruVRService();
-            if (nibiruVRService != null)
+            InitHoloevevrVRService();
+            if (holoeverVRService != null)
             {
-                CallObjectMethod(nibiruVRService, "setTimeWarpEnable", enabled);
+                CallObjectMethod(holoeverVRService, "setTimeWarpEnable", enabled);
             }
             else
             {
-                Debug.LogError("SetTimeWarpEnable failed, because nibiruVRService is null !!!!");
+                Debug.LogError("SetTimeWarpEnable failed, because holoeverVRService is null !!!!");
             }
         }
         /// <summary>
@@ -361,47 +361,47 @@ namespace Nxr.Internal
         /// <returns></returns>
         //public override void SetEnableSyncFrame(bool enabled)
         //{
-        //    InitNibiruVRService();
-        //    if (nibiruVRService != null)
+        //    InitHoloevevrVRService();
+        //    if (holoeverVRService != null)
         //    {
-        //        CallObjectMethod(nibiruVRService, "setEnableSyncFrame", enabled);
+        //        CallObjectMethod(holoeverVRService, "setEnableSyncFrame", enabled);
         //    }
         //    else
         //    {
-        //        Debug.LogError("SetEnableSyncFrame failed, because nibiruVRService is null !!!!");
+        //        Debug.LogError("SetEnableSyncFrame failed, because holoeverVRService is null !!!!");
         //    }
         //}
 
         //public override string GetSyncFrameUrl()
         //{
-        //    InitNibiruVRService();
-        //    if (nibiruVRService != null)
+        //    InitHoloevevrVRService();
+        //    if (holoeverVRService != null)
         //    {
-        //        return nibiruVRService.Call<string>("getSyncFrameUrl");
+        //        return holoeverVRService.Call<string>("getSyncFrameUrl");
         //    }
         //    else
         //    {
-        //        Debug.LogError("GetSyncFrameUrl failed, because nibiruVRService is null !!!!");
+        //        Debug.LogError("GetSyncFrameUrl failed, because holoeverVRService is null !!!!");
         //    }
         //    return null;
         //}
 
         //public override bool IsSyncFrameEnabled()
         //{
-        //    InitNibiruVRService();
-        //    if (nibiruVRService != null)
+        //    InitHoloevevrVRService();
+        //    if (holoeverVRService != null)
         //    {
-        //        return nibiruVRService.Call<bool>("isSyncFrameEnabled");
+        //        return holoeverVRService.Call<bool>("isSyncFrameEnabled");
         //    }
         //    return false;
         //}
 
         //public override bool IsSyncFrameSupported()
         //{
-        //    InitNibiruVRService();
-        //    if (nibiruVRService != null)
+        //    InitHoloevevrVRService();
+        //    if (holoeverVRService != null)
         //    {
-        //        return nibiruVRService.Call<bool>("isSyncFrameSupported");
+        //        return holoeverVRService.Call<bool>("isSyncFrameSupported");
         //    }
         //    return false;
         //}
@@ -410,54 +410,54 @@ namespace Nxr.Internal
 
         public override void SetCameraNearFar(float near, float far)
         {
-            CallStaticMethod(nibiruVR, "setProjectionNearFarForUnity", near, far);
+            CallStaticMethod(holoeverVR, "setProjectionNearFarForUnity", near, far);
         }
 
         public override void StopCapture()
         {
-            CallStaticMethod(nibiruVR, "stopCaptureForUnity");
+            CallStaticMethod(holoeverVR, "stopCaptureForUnity");
         }
 
         public override void OnDrawFrameCapture(int frameId)
         {
-            CallStaticMethod(nibiruVR, "onDrawFrameForUnity", frameId);
+            CallStaticMethod(holoeverVR, "onDrawFrameForUnity", frameId);
         }
 
-        public override NxrInstantNativeApi.NibiruDeviceType GetSixDofControllerPrimaryDeviceType()
+        public override NxrInstantNativeApi.HoloeverDeviceType GetSixDofControllerPrimaryDeviceType()
         {
             string result = "3";
-            CallStaticMethod<string>(ref result, nibiruVR, "getSystemProperty", "nxr.ctrl.primaryhand", "3");
+            CallStaticMethod<string>(ref result, holoeverVR, "getSystemProperty", "nxr.ctrl.primaryhand", "3");
             Debug.Log("primaryhand_" + result);
             int type = int.Parse(result);
             // 1 = left, 0 = right
             if (type == 0)
             {
-                return NxrInstantNativeApi.NibiruDeviceType.RightController;
+                return NxrInstantNativeApi.HoloeverDeviceType.RightController;
             } else if(type == 1)
             {
-                return NxrInstantNativeApi.NibiruDeviceType.LeftController;
+                return NxrInstantNativeApi.HoloeverDeviceType.LeftController;
             }
-            return NxrInstantNativeApi.NibiruDeviceType.None;
+            return NxrInstantNativeApi.HoloeverDeviceType.None;
         }
 
-        public override void SetSixDofControllerPrimaryDeviceType(NxrInstantNativeApi.NibiruDeviceType deviceType)
+        public override void SetSixDofControllerPrimaryDeviceType(NxrInstantNativeApi.HoloeverDeviceType deviceType)
         {
             int type = -1;
-            if(deviceType == NxrInstantNativeApi.NibiruDeviceType.LeftController)
+            if(deviceType == NxrInstantNativeApi.HoloeverDeviceType.LeftController)
             {
                 type = 1;
-            } else if(deviceType == NxrInstantNativeApi.NibiruDeviceType.RightController)
+            } else if(deviceType == NxrInstantNativeApi.HoloeverDeviceType.RightController)
             {
                 type = 0;
             }
 
-            if (type >=0) CallStaticMethod(nibiruVR, "setSystemProperty", "nxr.ctrl.primaryhand", "" + type);
+            if (type >=0) CallStaticMethod(holoeverVR, "setSystemProperty", "nxr.ctrl.primaryhand", "" + type);
         }
         
         public override int GetControllerTipState()
         {
             string result = "0";
-            CallStaticMethod<string>(ref result, nibiruVR, "getSystemProperty", "nxr.ctrl.calib.tip", "0");
+            CallStaticMethod<string>(ref result, holoeverVR, "getSystemProperty", "nxr.ctrl.calib.tip", "0");
             int state = int.Parse(result);
             // 1-手柄校准提示框已弹出 , 0-未弹出
             return state;
@@ -465,7 +465,7 @@ namespace Nxr.Internal
 
         public override void SetControllerTipState(int state)
         {
-            CallStaticMethod(nibiruVR, "setSystemProperty", "nxr.ctrl.calib.tip", "" + state);
+            CallStaticMethod(holoeverVR, "setSystemProperty", "nxr.ctrl.calib.tip", "" + state);
         }
     }
 }

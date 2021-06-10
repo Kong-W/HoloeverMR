@@ -1,4 +1,4 @@
-using NibiruAxis;
+using HoloeverAxis;
 using UnityEngine;
 
 namespace Nxr.Internal
@@ -96,7 +96,7 @@ namespace Nxr.Internal
                 trackPosition = false;
             }
 
-            if (NxrViewer.Instance.GetNibiruService() != null && NxrViewer.Instance.GetNibiruService().IsMarkerRecognizeRunning)
+            if (NxrViewer.Instance.GetHoloeverService() != null && NxrViewer.Instance.GetHoloeverService().IsMarkerRecognizeRunning)
             {
                 if (NxrGlobal.isMarkerVisible)
                 {

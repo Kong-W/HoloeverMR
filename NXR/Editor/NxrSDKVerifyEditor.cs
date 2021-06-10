@@ -36,25 +36,11 @@ namespace Nxr.Internal
 
             GUILayout.Space(20);
             GUIStyle labelStyle = new GUIStyle();
-            labelStyle.normal.textColor = new Color(220 / 255.0f, 20 / 255.0f, 60 / 255.0f, 1.0f);
+            labelStyle.normal.textColor = Color.black;
             labelStyle.fontSize = 13;
-            GUILayout.Label("  SDK Verify: \n\n  Step1: Use Nibiru Signature Tool generate NibiruSDKKey.bin.\n" +
-                "  Step2: Put NibiruSDKKey.bin to Assets\\Plugins\\Android\\assets.\n" +
-                "  Step3: Put Encryption Key String to Input Box.",
-                labelStyle);
-            GUILayout.Space(20);
+            GUILayout.Label(" SDK Verify:",labelStyle);
+            GUILayout.Space(5);
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Get the lastest version of Tool:");
-            GUIStyle style = new GUIStyle();
-            style.normal.textColor = new Color(0, 122f / 255f, 204f / 255f);
-            if (GUILayout.Button(sdkurl, style, GUILayout.Width(200)))
-            {
-                Application.OpenURL(sdkurl);
-            }
-            GUILayout.Space(20);
-
-            // inputText = TextField(inputText, null);// GUILayout.TextField(inputText);
             inputText = EditorGUILayout.TextArea(inputText);
             GUILayout.Space(20);
             bool SDKKeyExist = NxrPluginEditor.IsFileExists("assets/NibiruSDKKey.bin");

@@ -1,9 +1,8 @@
-using NibiruAxis;
-using NibiruTask;
+using HoloeverAxis;
+using HoloeverTask;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Nxr.Internal
 {
@@ -119,7 +118,7 @@ namespace Nxr.Internal
             }
 
 #if UNITY_ANDROID && !ANDROID_REMOTE_NRR
-            if ((NxrPlayerCtrl.Instance.GamepadEnabled && NibiruTaskApi.IsQuatConn()) || ControllerAndroid.IsNoloConn())
+            if ((NxrPlayerCtrl.Instance.GamepadEnabled && HoloeverTaskApi.IsQuatConn()) || ControllerAndroid.IsNoloConn())
 #elif UNITY_STANDALONE_WIN || ANDROID_REMOTE_NRR
             if (NxrControllerHelper.IsLeftNoloControllerConnected || NxrControllerHelper.IsRightNoloControllerConnected)
             {
@@ -269,7 +268,7 @@ namespace Nxr.Internal
         /// <returns></returns>
         protected static RaycastResult FindFirstRaycastCore(List<RaycastResult> candidates)
         {
-            if (NibiruRemindBox.Instance.Showing())
+            if (HoloeverRemindBox.Instance.Showing())
             {
                 float minDistance = 9999;
                 int listIndex = candidates.Count + 1;

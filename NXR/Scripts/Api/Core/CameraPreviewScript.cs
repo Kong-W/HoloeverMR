@@ -28,15 +28,15 @@ namespace Nxr.Internal
             get { return cameraPreviewHelper; }
         }
 
-        NibiruService nibiruService;
+        HoloeverService holoeverService;
         // Use this for initialization
         void Start()
         {
             Debug.Log("Camera PreView Texture [" + PreTextureWidth + "," + PreTextureHeight + "]");
-            nibiruService = NxrViewer.Instance.GetNibiruService();
-            if (nibiruService != null)
+            holoeverService = NxrViewer.Instance.GetHoloeverService();
+            if (holoeverService != null)
             {
-                cameraPreviewHelper = nibiruService.InitCameraPreviewHelper();
+                cameraPreviewHelper = holoeverService.InitCameraPreviewHelper();
             }
 
             material = GetComponent<Renderer>().material;
@@ -102,7 +102,7 @@ namespace Nxr.Internal
                 }
 
                 // recoginize
-                if(succ && !nibiruService.IsCameraPreviewing())
+                if(succ && !holoeverService.IsCameraPreviewing())
                 {
                     // camera preview stopped !!!
                     Debug.LogError("IsCameraPreviewing false!!!");
@@ -123,7 +123,7 @@ namespace Nxr.Internal
                 }
 
 
-                //if (succ && nibiruService.GetCurrentCameraId() == CAMERA_ID.BACK)
+                //if (succ && holoeverService.GetCurrentCameraId() == CAMERA_ID.BACK)
                 //{
                 // material.mainTextureScale = new Vector2(-1, 1);
                 //}
@@ -155,9 +155,9 @@ namespace Nxr.Internal
 
         private void DoCameraFocus()
         {
-            if (cameraPreviewHelper != null && nibiruService != null)
+            if (cameraPreviewHelper != null && holoeverService != null)
             {
-                nibiruService.DoCameraAutoFocus();
+                holoeverService.DoCameraAutoFocus();
             }
         }
 
@@ -168,9 +168,9 @@ namespace Nxr.Internal
                 StoptAutoCameraFocus();
             }
 
-            if (nibiruService != null)
+            if (holoeverService != null)
             {
-                nibiruService.StopCamereaPreView();
+                holoeverService.StopCamereaPreView();
             }
 
             if (cameraPreviewHelper != null)
